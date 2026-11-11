@@ -1,0 +1,2456 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#ededed" />
+    <meta
+      name="description"
+      content="Stelar Cloud: 50 GB de almacenamiento gratis para guardar, organizar y conectar tus imágenes y videos con tus proyectos."
+    />
+    <meta
+      name="keywords"
+      content="Stelar Cloud, 50 GB gratis, almacenamiento gratis, biblioteca multimedia, gestión de archivos, API multimedia"
+    />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <title>Stelar Cloud — 50 GB gratis para tus archivos</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Stelar Cloud" />
+    <meta property="og:title" content="Stelar Cloud — 50 GB gratis para tus archivos" />
+    <meta
+      property="og:description"
+      content="Stelar Cloud: 50 GB de almacenamiento gratis para guardar, organizar y conectar tus imágenes y videos con tus proyectos."
+    />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Stelar Cloud — 50 GB gratis para tus archivos" />
+    <meta
+      name="twitter:description"
+      content="50 GB de almacenamiento gratis para guardar, organizar y conectar tus imágenes y videos."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #ededed;
+        --paper: #f9f9f9;
+        --ink: #242424;
+        --muted: #666;
+        --purple: #6822e8;
+        --purple2: #8b51f4;
+        --lime: #d9ff00;
+        --line: #d4d4d4;
+        --shadow: 0 16px 35px #22222220;
+        --font: "Manrope", Arial, sans-serif;
+        --mono: "DM Mono", monospace;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--font);
+        overflow-x: hidden;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        font: inherit;
+      }
+      ::selection {
+        background: var(--lime);
+        color: #171717;
+      }
+      .wrap {
+        width: min(1180px, calc(100% - 64px));
+        margin: auto;
+      }
+      .menu-button {
+        position: fixed;
+        z-index: 50;
+        right: 24px;
+        top: 20px;
+        width: 60px;
+        height: 60px;
+        background: #fff;
+        border: 1px solid #e4e4e4;
+        border-radius: 17px;
+        box-shadow: 0 7px 25px #0000000c;
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+      .menu-button span,
+      .menu-button span:before,
+      .menu-button span:after {
+        content: "";
+        width: 23px;
+        height: 2px;
+        background: var(--purple);
+        display: block;
+        position: relative;
+        transition: 0.25s;
+      }
+      .menu-button span:before {
+        position: absolute;
+        top: -7px;
+      }
+      .menu-button span:after {
+        position: absolute;
+        top: 7px;
+      }
+      .menu-button.active span {
+        background: transparent;
+      }
+      .menu-button.active span:before {
+        top: 0;
+        transform: rotate(45deg);
+      }
+      .menu-button.active span:after {
+        top: 0;
+        transform: rotate(-45deg);
+      }
+      .menu-panel {
+        position: fixed;
+        z-index: 45;
+        right: 24px;
+        top: 91px;
+        width: min(320px, calc(100vw - 48px));
+        padding: 19px;
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        transform: translateY(-9px);
+        opacity: 0;
+        visibility: hidden;
+        transition: 0.25s;
+      }
+      .menu-panel.open {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+      .menu-panel a {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 13px 9px;
+        border-bottom: 1px solid #eee;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .menu-panel a:last-child {
+        border: 0;
+      }
+      .menu-panel a span {
+        color: var(--purple);
+      }
+      .secret-button {
+        position: fixed;
+        z-index: 45;
+        bottom: 17px;
+        left: 18px;
+        border: 1px solid #e9e9e9;
+        background: #fff;
+        border-radius: 999px;
+        padding: 10px 15px;
+        box-shadow: 0 8px 20px #00000010;
+        color: #393939;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .secret-button b {
+        color: var(--purple);
+        margin-left: 6px;
+      }
+      .secret-pop {
+        position: fixed;
+        z-index: 60;
+        left: 50%;
+        bottom: 82px;
+        width: max-content;
+        max-width: min(420px, calc(100vw - 32px));
+        padding: 15px 20px;
+        border: 1px solid #383838;
+        border-radius: 18px;
+        background: #171717;
+        color: #fff;
+        box-shadow: 0 16px 40px #00000025;
+        font-size: 13px;
+        line-height: 1.55;
+        text-align: center;
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, 18px) scale(0.97);
+        pointer-events: none;
+        transition:
+          opacity 0.32s ease,
+          transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1),
+          visibility 0s linear 0.38s;
+      }
+      .secret-pop.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, 0) scale(1);
+        transition-delay: 0s;
+      }
+      .celebration-canvas,
+      .shooting-stars {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+      .celebration-canvas {
+        z-index: 55;
+      }
+      .shooting-stars {
+        z-index: 56;
+        overflow: hidden;
+        contain: strict;
+      }
+      .shooting-star {
+        position: absolute;
+        width: clamp(130px, 22vw, 230px);
+        height: 3px;
+        border-radius: 50%;
+        opacity: 0;
+        transform-origin: 100% 50%;
+        background: linear-gradient(90deg, transparent, #bcbcbc 30%, #444 72%, #111 100%);
+        box-shadow:
+          0 0 6px #555,
+          0 0 14px #777;
+        animation: shooting-star-cross 1.45s ease-out forwards;
+      }
+      .shooting-star::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: -2px;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #222;
+        box-shadow: 0 0 8px 2px #555;
+      }
+      @keyframes shooting-star-cross {
+        0% {
+          opacity: 0;
+          transform: translate3d(0, 0, 0) rotate(140deg) scaleX(0.12);
+        }
+        9% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translate3d(-110vw, 75vh, 0) rotate(140deg) scaleX(1);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .shooting-star {
+          animation: none;
+          display: none;
+        }
+      }
+      .secret-trigger {
+        cursor: pointer;
+      }
+      .secret-trigger:focus-visible,
+      #footerSecret:focus-visible {
+        outline: 2px solid #555;
+        outline-offset: 5px;
+      }
+      .about-star {
+        transition: transform 0.25s ease;
+      }
+      .about-star:hover {
+        transform: rotate(8deg) scale(1.04);
+      }
+      .footer-brand-group {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .footer-star {
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: var(--purple);
+        font-size: 18px;
+        line-height: 1;
+        transition: transform 0.2s ease;
+      }
+      .footer-star:hover {
+        transform: rotate(18deg) scale(1.15);
+      }
+      /* Hero tipográfico */
+      .hero {
+        height: max(720px, 100svh);
+        min-height: 720px;
+        position: relative;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        overflow: hidden;
+        background: #ededed;
+      }
+      .hero:before {
+        content: "";
+        position: absolute;
+        inset: -8% -4% auto;
+        height: 62%;
+        background: #f4f4f4;
+        border-radius: 0 0 47% 28%;
+        transform: rotate(-3deg);
+        box-shadow: 0 18px 30px #00000009;
+      }
+      .hero:after {
+        content: "";
+        position: absolute;
+        bottom: -120px;
+        right: -65px;
+        width: 430px;
+        height: 200px;
+        background: #f8f8f8;
+        border-radius: 50% 50% 0 0;
+        filter: drop-shadow(0 -8px 15px #0000000a);
+      }
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding-top: clamp(100px, 17vh, 170px);
+        text-align: center;
+      }
+      .hero-kicker {
+        position: absolute;
+        top: 42px;
+        left: 7%;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: #666;
+      }
+      .hero-kicker i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #27b986;
+        box-shadow: 0 0 0 4px #27b98620;
+      }
+      .speech {
+        position: absolute;
+        right: 9%;
+        top: 73px;
+        background: #242039;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 8px 22px #00000014;
+        transform: rotate(2deg);
+      }
+      .speech:after {
+        content: "";
+        position: absolute;
+        left: 20px;
+        bottom: -7px;
+        border-width: 8px 8px 0 0;
+        border-style: solid;
+        border-color: #242039 transparent transparent transparent;
+      }
+      .hero-title {
+        position: relative;
+        margin: 0 auto;
+        max-width: 1220px;
+        line-height: 0.72;
+        letter-spacing: -0.105em;
+        font-weight: 800;
+        font-size: clamp(110px, 22.5vw, 310px);
+        white-space: nowrap;
+        color: #fff;
+        text-shadow:
+          0 12px 3px #17171719,
+          0 22px 24px #00000011;
+      }
+      .hero-title .cloud {
+        display: block;
+        font-size: 0.58em;
+        letter-spacing: -0.075em;
+        color: var(--purple);
+        text-shadow:
+          0 3px 0 #4210ab,
+          0 7px 0 #391094,
+          0 13px 22px #5b23d94a;
+        margin-top: 20px;
+      }
+      .hero-title .brand-word {
+        display: block;
+        transform: scaleX(0.99);
+      }
+      .orbit {
+        position: absolute;
+        z-index: 3;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 27%, #8849fa, #641ae0 66%, #4c13b5);
+        box-shadow: 0 22px 28px #5925db30;
+        animation: float 5s ease-in-out infinite;
+      }
+      .orb-a {
+        width: 130px;
+        height: 130px;
+        top: calc(clamp(100px, 17vh, 170px) - 65px);
+        left: 14%;
+      }
+      .orb-b {
+        width: 86px;
+        height: 86px;
+        top: calc(clamp(100px, 17vh, 170px) + 26px);
+        left: 57%;
+        animation-delay: -1.2s;
+      }
+      .orb-c {
+        width: 50px;
+        height: 50px;
+        top: 95px;
+        left: 40%;
+        animation-delay: -2s;
+      }
+      .orb-d {
+        width: 26px;
+        height: 26px;
+        top: 220px;
+        right: 20%;
+        animation-delay: -0.7s;
+      }
+      .hero-sub {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        align-items: center;
+        gap: 26px;
+        width: min(940px, 88%);
+        margin: 53px auto 0;
+        text-align: left;
+        position: relative;
+        z-index: 4;
+      }
+      .availability {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 14px;
+        padding: 13px 17px;
+        box-shadow: 0 8px 25px #0000000c;
+        font-size: 13px;
+        font-weight: 700;
+        width: max-content;
+      }
+      .availability i {
+        width: 8px;
+        height: 8px;
+        background: #28b887;
+        border-radius: 50%;
+      }
+      .hero-copy {
+        font-size: 17px;
+        line-height: 1.7;
+        color: #505050;
+      }
+      .hero-copy strong {
+        color: #222;
+      }
+      .role-pills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 15px;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        border: 1px solid #eee;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-size: 12px;
+        font-weight: 700;
+        box-shadow: 0 7px 18px #0000000a;
+      }
+      .pill i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--purple);
+      }
+      .scroll-link {
+        position: absolute;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.21em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        z-index: 3;
+        color: #575757;
+        animation: scrollpulse 2s infinite;
+      }
+      .scroll-link span {
+        color: var(--purple);
+      }
+      .hero-stamp {
+        position: absolute;
+        left: 5%;
+        bottom: 10px;
+        width: 116px;
+        height: 116px;
+        border: 1px dashed #b3b3b3;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        transform: rotate(-16deg);
+        z-index: 4;
+      }
+      .hero-stamp:before {
+        content: "✦";
+        position: absolute;
+        inset: 23px;
+        border-radius: 50%;
+        background: var(--purple);
+        color: white;
+        display: grid;
+        place-items: center;
+        font-size: 33px;
+        box-shadow: 0 9px 20px #6822e844;
+      }
+      .hero-stamp span {
+        position: absolute;
+        top: 0;
+        left: 21px;
+        background: var(--bg);
+        padding: 3px 6px;
+        font-family: var(--mono);
+        font-size: 9px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+      }
+      .marquee {
+        position: relative;
+        z-index: 5;
+        overflow: hidden;
+        background: var(--purple);
+        color: white;
+        transform: rotate(-1.2deg) scale(1.02);
+        padding: 15px 0;
+        margin-top: -2px;
+      }
+      .marquee-track {
+        display: flex;
+        gap: 35px;
+        width: max-content;
+        animation: marquee 24s linear infinite;
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+      }
+      .marquee-track b {
+        font-weight: 400;
+        color: var(--lime);
+      }
+      /* Bloques de portfolio */
+      .section {
+        padding: 118px 0;
+        position: relative;
+      }
+      .section-tag {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--purple);
+      }
+      .section-title {
+        font-size: clamp(46px, 8vw, 108px);
+        line-height: 0.88;
+        letter-spacing: -0.09em;
+        margin: 15px 0 22px;
+        font-weight: 800;
+      }
+      .section-title .accent {
+        color: var(--purple);
+      }
+      .section-intro {
+        font-size: 16px;
+        color: #646464;
+        max-width: 530px;
+        line-height: 1.75;
+      }
+      .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 25px;
+        margin-bottom: 44px;
+      }
+      .tiny-note {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: #727272;
+        max-width: 210px;
+        line-height: 1.7;
+      }
+      .project-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 17px;
+      }
+      .project-card {
+        grid-column: span 3;
+        min-height: 335px;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #dcdcdc;
+        border-radius: 24px;
+        background: #f8f8f8;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+      }
+      .project-card:hover {
+        transform: translateY(-7px);
+        box-shadow: 0 20px 40px #00000012;
+      }
+      .project-card.wide {
+        grid-column: span 6;
+        min-height: 270px;
+      }
+      .card-art {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+      .card-art.purple-bg {
+        background: linear-gradient(135deg, #e8dfff, #f5efff 55%, #e7e3fa);
+      }
+      .card-art.green-bg {
+        background: linear-gradient(135deg, #e8f5e9, #f4f6ed 55%, #dcecdf);
+      }
+      .card-art.yellow-bg {
+        background: linear-gradient(135deg, #faf2d6, #fbf8ec 55%, #eae8d9);
+      }
+      .card-art.blue-bg {
+        background: linear-gradient(135deg, #dceaff, #eef5ff 55%, #e5e4fa);
+      }
+      .card-art.screen-art {
+        background: #e9edf5;
+        position: relative;
+        padding: 0;
+      }
+      .product-shot {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        transition: transform 0.45s;
+      }
+      .project-card:hover .product-shot {
+        transform: scale(1.025);
+      }
+      .api-panel-shot {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 57%;
+        height: 100%;
+        object-fit: cover;
+        object-position: left top;
+        border-left: 8px solid #fff;
+        border-radius: 13px 0 0 13px;
+        box-shadow: -12px 0 24px #18234425;
+      }
+      .api-promo {
+        position: absolute;
+        left: 7%;
+        top: 46%;
+        transform: translateY(-50%);
+        font-size: clamp(50px, 7vw, 95px);
+        line-height: 0.78;
+        letter-spacing: -0.105em;
+        font-weight: 800;
+        color: var(--purple);
+        text-shadow:
+          0 4px 0 #4212a2,
+          0 9px 0 #39108e,
+          0 18px 24px #5019ba35;
+      }
+      .api-promo small {
+        display: block;
+        margin-top: 19px;
+        font: 11px/1.6 var(--mono);
+        letter-spacing: 0.03em;
+        color: #555;
+        text-shadow: none;
+      }
+      .card-art.photo-bg {
+        background: #111827;
+      }
+      .library-photo {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 46%;
+        transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .project-card:hover .library-photo {
+        transform: scale(1.055);
+      }
+      .photo-shade {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, #090d1c12 35%, #090d1ca8 100%);
+      }
+      .photo-badge {
+        position: absolute;
+        top: 18px;
+        left: 19px;
+        border: 1px solid #ffffff75;
+        background: #111827a8;
+        color: white;
+        border-radius: 999px;
+        padding: 8px 12px;
+        font: 10px var(--mono);
+        letter-spacing: 0.09em;
+        backdrop-filter: blur(8px);
+      }
+      .photo-badge i {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        background: #9bffbf;
+        border-radius: 50%;
+        margin-right: 6px;
+      }
+      .photo-caption {
+        position: absolute;
+        left: 22px;
+        bottom: 82px;
+        color: #fff;
+        font-weight: 800;
+        font-size: clamp(19px, 3vw, 27px);
+        letter-spacing: -0.05em;
+        text-shadow: 0 2px 10px #0008;
+      }
+      .photo-caption small {
+        display: block;
+        margin-top: 4px;
+        font: 10px var(--mono);
+        letter-spacing: 0.03em;
+        color: #ffffffcc;
+      }
+      .art-word {
+        font-size: clamp(65px, 11vw, 140px);
+        font-weight: 800;
+        letter-spacing: -0.105em;
+        line-height: 0.8;
+        color: #fff;
+        text-shadow:
+          0 9px 0 #21212118,
+          0 18px 23px #00000018;
+        transform: rotate(-6deg);
+      }
+      .art-word.violet {
+        color: var(--purple);
+        text-shadow:
+          0 3px 0 #4314a4,
+          0 8px 0 #391091,
+          0 15px 25px #4b19a438;
+      }
+      .art-window {
+        width: min(76%, 410px);
+        background: #fff;
+        border: 1px solid #fff;
+        border-radius: 16px;
+        box-shadow: 0 20px 40px #25356020;
+        padding: 14px;
+        transform: rotate(3deg);
+      }
+      .window-top {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 13px;
+      }
+      .window-top i {
+        width: 7px;
+        height: 7px;
+        background: #d9d9df;
+        border-radius: 50%;
+      }
+      .folder-row {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+        padding: 9px;
+        border-radius: 9px;
+        background: #f6f5fb;
+        margin-top: 7px;
+        font-size: 10px;
+        font-weight: 700;
+        color: #42404b;
+      }
+      .folder-icon {
+        display: grid;
+        place-items: center;
+        width: 27px;
+        height: 24px;
+        background: #eee8ff;
+        border-radius: 7px;
+        color: var(--purple);
+      }
+      .mock-api {
+        width: min(75%, 440px);
+        background: #1c1a27;
+        color: #e7e4ee;
+        border-radius: 16px;
+        padding: 20px 22px;
+        box-shadow: 0 22px 35px #17151e30;
+        transform: rotate(-3deg);
+        font: 11px/1.8 var(--mono);
+      }
+      .mock-api .green {
+        color: #9ce4bc;
+      }
+      .mock-api .purple {
+        color: #c39aff;
+      }
+      .big-star {
+        font-size: 125px;
+        color: white;
+        text-shadow: 0 9px 0 #00000017;
+        filter: drop-shadow(0 12px 20px #6822e855);
+        animation: spin 30s linear infinite;
+      }
+      .bubble {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, #a579ff, #6520df 75%);
+        box-shadow: 0 16px 24px #5c23ca35;
+      }
+      .bubble.b1 {
+        width: 75px;
+        height: 75px;
+        top: 18%;
+        left: 15%;
+      }
+      .bubble.b2 {
+        width: 40px;
+        height: 40px;
+        bottom: 15%;
+        right: 18%;
+      }
+      .card-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 18px 20px;
+        background: linear-gradient(0deg, #f7f7f7 83%, #f7f7f700);
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 12px;
+      }
+      .card-info small {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--purple);
+        letter-spacing: 0.1em;
+      }
+      .card-info h3 {
+        font-size: 19px;
+        letter-spacing: -0.04em;
+        margin: 4px 0 0;
+      }
+      .arrow {
+        width: 39px;
+        height: 39px;
+        flex: none;
+        border-radius: 50%;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        display: grid;
+        place-items: center;
+        color: var(--purple);
+        font-size: 19px;
+        transition: 0.2s;
+      }
+      .project-card:hover .arrow {
+        background: var(--purple);
+        color: white;
+        transform: rotate(-45deg);
+      }
+      .feature-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-top: 1px solid #cecece;
+        border-bottom: 1px solid #cecece;
+        margin-top: 52px;
+      }
+      .feature-item {
+        padding: 23px 17px;
+        border-right: 1px solid #cecece;
+      }
+      .feature-item:last-child {
+        border: 0;
+      }
+      .feature-item span {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--purple);
+      }
+      .feature-item h3 {
+        font-size: 15px;
+        margin: 10px 0 6px;
+      }
+      .feature-item p {
+        margin: 0;
+        color: #777;
+        font-size: 12px;
+        line-height: 1.65;
+      }
+      .about {
+        background: #e5e5e5;
+        overflow: hidden;
+      }
+      .about:before {
+        content: "✦";
+        position: absolute;
+        font-size: 540px;
+        color: #fff;
+        opacity: 0.43;
+        line-height: 1;
+        top: -110px;
+        right: -80px;
+        transform: rotate(16deg);
+        pointer-events: none;
+      }
+      .about-grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 80px;
+        align-items: center;
+      }
+      .about-visual {
+        min-height: 400px;
+        display: grid;
+        place-items: center;
+        position: relative;
+      }
+      .about-monogram {
+        font-size: clamp(150px, 24vw, 290px);
+        font-weight: 800;
+        letter-spacing: -0.14em;
+        color: #fff;
+        text-shadow:
+          0 12px 0 #00000017,
+          0 27px 40px #00000012;
+        position: relative;
+        z-index: 1;
+      }
+      .about-monogram span {
+        color: var(--purple);
+        text-shadow:
+          0 4px 0 #4212a2,
+          0 11px 0 #39108e,
+          0 22px 32px #5019ba35;
+      }
+      .about-orbit {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border: 1px dashed #aaa;
+        border-radius: 50%;
+        animation: spin 45s linear infinite;
+      }
+      .about-orbit:before,
+      .about-orbit:after {
+        content: "";
+        position: absolute;
+        width: 31px;
+        height: 31px;
+        border-radius: 50%;
+        background: var(--purple);
+        box-shadow: 0 8px 16px #6822e844;
+      }
+      .about-orbit:before {
+        top: 27px;
+        left: 30px;
+      }
+      .about-orbit:after {
+        bottom: 14px;
+        right: 57px;
+        width: 16px;
+        height: 16px;
+        background: var(--lime);
+      }
+      .about-copy .section-title {
+        font-size: clamp(50px, 7vw, 83px);
+      }
+      .about-copy p {
+        color: #575757;
+        line-height: 1.85;
+        font-size: 15px;
+      }
+      .tech-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 23px;
+      }
+      .tech {
+        border: 1px solid #d2d2d2;
+        border-radius: 999px;
+        background: #f6f6f6;
+        padding: 8px 12px;
+        font-family: var(--mono);
+        font-size: 10px;
+        color: #555;
+        transition: 0.2s;
+      }
+      .tech:hover {
+        background: var(--purple);
+        border-color: var(--purple);
+        color: #fff;
+        transform: translateY(-3px);
+      }
+      .contact {
+        padding: 128px 0 145px;
+        text-align: center;
+        overflow: hidden;
+      }
+      .contact .section-title {
+        font-size: clamp(64px, 12vw, 155px);
+        margin: 12px 0;
+      }
+      .contact p {
+        margin: 0 auto 24px;
+        color: #656565;
+        font-size: 16px;
+        max-width: 480px;
+      }
+      .contact-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        background: var(--purple);
+        color: #fff;
+        border-radius: 999px;
+        padding: 16px 23px;
+        font-weight: 800;
+        box-shadow: 0 12px 25px #6822e83b;
+        transition: 0.2s;
+      }
+      .contact-link:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 18px 30px #6822e850;
+      }
+      .contact-link span {
+        display: grid;
+        place-items: center;
+        background: #fff;
+        color: var(--purple);
+        width: 29px;
+        height: 29px;
+        border-radius: 50%;
+        font-size: 17px;
+      }
+      .contact-orb {
+        position: absolute;
+        border-radius: 50%;
+        background: radial-gradient(circle at 32% 28%, #9057ff, #6620dc 73%);
+        box-shadow: 0 18px 30px #6822e832;
+      }
+      .contact-orb.one {
+        width: 75px;
+        height: 75px;
+        left: 11%;
+        top: 20%;
+      }
+      .contact-orb.two {
+        width: 40px;
+        height: 40px;
+        right: 14%;
+        bottom: 19%;
+      }
+      .footer {
+        border-top: 1px solid #d3d3d3;
+        padding: 25px 0 34px;
+        font-size: 11px;
+        color: #777;
+      }
+      .footer-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+      }
+      .footer-brand {
+        font-weight: 800;
+        color: #252525;
+        font-size: 14px;
+        letter-spacing: -0.4px;
+      }
+      .footer-brand b {
+        color: var(--purple);
+      }
+      .footer-links {
+        display: flex;
+        gap: 17px;
+      }
+      .footer a:hover {
+        color: var(--purple);
+      }
+      .reveal {
+        opacity: 0;
+        transform: translateY(25px);
+        transition:
+          opacity 0.7s,
+          transform 0.7s;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-17px);
+        }
+      }
+      @keyframes marquee {
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes scrollpulse {
+        50% {
+          transform: translate(-50%, 5px);
+        }
+      }
+      @media (max-width: 850px) {
+        .wrap {
+          width: calc(100% - 42px);
+        }
+        .hero {
+          min-height: 760px;
+          height: auto;
+          padding-bottom: 45px;
+        }
+        .hero-inner {
+          padding-top: 190px;
+        }
+        .hero-title {
+          font-size: clamp(94px, 22vw, 190px);
+        }
+        .hero-kicker {
+          left: 7%;
+          top: 35px;
+        }
+        .speech {
+          right: 8%;
+          top: 80px;
+        }
+        .orb-a {
+          width: 95px;
+          height: 95px;
+          left: 12%;
+          top: 130px;
+        }
+        .orb-b {
+          width: 65px;
+          height: 65px;
+          left: auto;
+          right: 15%;
+          top: 220px;
+        }
+        .orb-c {
+          width: 38px;
+          height: 38px;
+          left: 70%;
+          top: 110px;
+        }
+        .orb-d {
+          display: none;
+        }
+        .hero-sub {
+          margin-top: 60px;
+          width: 88%;
+          grid-template-columns: 1fr;
+          gap: 15px;
+          text-align: center;
+        }
+        .availability {
+          margin: auto;
+        }
+        .role-pills {
+          justify-content: center;
+        }
+        .hero-copy {
+          font-size: 15px;
+        }
+        .hero-stamp {
+          width: 89px;
+          height: 89px;
+          left: 5%;
+          bottom: 0;
+        }
+        .hero-stamp:before {
+          inset: 18px;
+          font-size: 24px;
+        }
+        .hero-stamp span {
+          font-size: 7px;
+          left: 12px;
+        }
+        .section {
+          padding: 87px 0;
+        }
+        .project-card {
+          min-height: 285px;
+        }
+        .project-card.wide {
+          min-height: 250px;
+        }
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .about-visual {
+          min-height: 280px;
+        }
+        .about-orbit {
+          width: 240px;
+          height: 240px;
+        }
+        .about-copy {
+          text-align: center;
+        }
+        .about-copy .section-intro {
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .tech-list {
+          justify-content: center;
+        }
+        .feature-row {
+          grid-template-columns: 1fr 1fr;
+        }
+        .feature-item:nth-child(2) {
+          border-right: 0;
+        }
+        .feature-item:nth-child(-n + 2) {
+          border-bottom: 1px solid #cecece;
+        }
+        .footer-inner {
+          flex-wrap: wrap;
+        }
+        .footer-links {
+          order: 3;
+          width: 100%;
+          justify-content: center;
+        }
+      }
+      @media (max-width: 560px) {
+        .wrap {
+          width: calc(100% - 34px);
+        }
+        .menu-button {
+          right: 14px;
+          top: 13px;
+          width: 50px;
+          height: 50px;
+          border-radius: 14px;
+        }
+        .menu-panel {
+          right: 14px;
+          top: 73px;
+        }
+        .secret-button {
+          left: 11px;
+          bottom: 11px;
+        }
+        .hero {
+          min-height: 700px;
+        }
+        .hero-inner {
+          padding-top: 182px;
+        }
+        .hero-title {
+          font-size: 22vw;
+          line-height: 0.76;
+        }
+        .hero-title .cloud {
+          font-size: 0.59em;
+          margin-top: 13px;
+        }
+        .hero-kicker {
+          font-size: 9px;
+          top: 26px;
+          left: 18px;
+        }
+        .speech {
+          top: 76px;
+          right: 15px;
+          font-size: 10px;
+          padding: 8px 11px;
+        }
+        .orb-a {
+          width: 68px;
+          height: 68px;
+          left: 8%;
+          top: 128px;
+        }
+        .orb-b {
+          width: 49px;
+          height: 49px;
+          right: 10%;
+          top: 207px;
+        }
+        .orb-c {
+          width: 29px;
+          height: 29px;
+          top: 111px;
+          left: 68%;
+        }
+        .hero-sub {
+          margin-top: 54px;
+          width: 94%;
+        }
+        .hero-copy {
+          font-size: 13px;
+        }
+        .availability {
+          font-size: 11px;
+          padding: 11px 13px;
+        }
+        .pill {
+          font-size: 10px;
+          padding: 9px 11px;
+        }
+        .scroll-link {
+          bottom: 22px;
+          font-size: 9px;
+        }
+        .hero-stamp {
+          left: 7px;
+          width: 71px;
+          height: 71px;
+          bottom: 17px;
+        }
+        .hero-stamp:before {
+          inset: 14px;
+          font-size: 20px;
+        }
+        .hero-stamp span {
+          letter-spacing: 0.15em;
+          left: 5px;
+        }
+        .marquee {
+          padding: 12px 0;
+        }
+        .marquee-track {
+          font-size: 10px;
+          gap: 24px;
+        }
+        .section {
+          padding: 72px 0;
+        }
+        .section-header {
+          display: block;
+          margin-bottom: 28px;
+        }
+        .section-title {
+          font-size: 60px;
+        }
+        .tiny-note {
+          margin-top: 15px;
+          max-width: none;
+        }
+        .project-grid {
+          display: block;
+        }
+        .project-card,
+        .project-card.wide {
+          display: block;
+          min-height: 300px;
+          margin-bottom: 13px;
+        }
+        .card-info h3 {
+          font-size: 16px;
+        }
+        .art-word {
+          font-size: 100px;
+        }
+        .feature-row {
+          margin-top: 33px;
+        }
+        .feature-item {
+          padding: 17px 10px;
+        }
+        .feature-item h3 {
+          font-size: 13px;
+        }
+        .feature-item p {
+          font-size: 11px;
+        }
+        .about:before {
+          font-size: 320px;
+          right: -90px;
+          top: 0;
+        }
+        .about-visual {
+          min-height: 230px;
+        }
+        .about-orbit {
+          width: 205px;
+          height: 205px;
+        }
+        .about-monogram {
+          font-size: 178px;
+        }
+        .about-copy .section-title {
+          font-size: 61px;
+        }
+        .about-copy p {
+          font-size: 13px;
+        }
+        .contact {
+          padding: 90px 0 110px;
+        }
+        .contact .section-title {
+          font-size: 18vw;
+        }
+        .contact p {
+          font-size: 14px;
+        }
+        .contact-orb.one {
+          width: 49px;
+          height: 49px;
+          left: 7%;
+        }
+        .contact-orb.two {
+          width: 28px;
+          height: 28px;
+          right: 7%;
+        }
+        .footer-inner {
+          justify-content: center;
+          text-align: center;
+        }
+        .footer-links {
+          gap: 13px;
+          font-size: 10px;
+        }
+        .footer-inner > span {
+          width: 100%;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *:before,
+        *:after {
+          scroll-behavior: auto !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .reveal {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+
+    <style>
+      html {
+        filter: grayscale(1);
+        color-scheme: light;
+      }
+    </style>
+
+    <style>
+      /* La portada sigue la referencia; usa los colores ya definidos para Stelar Cloud. */
+      .hero {
+        height: max(720px, 100svh);
+        min-height: 720px;
+      }
+      .hero:after {
+        width: 520px;
+        height: 245px;
+        right: -82px;
+        bottom: -132px;
+      }
+      .hero-inner {
+        width: 100%;
+        padding: clamp(86px, 14vh, 118px) 20px 120px;
+        text-align: center;
+      }
+      .hero-kicker {
+        top: 40px;
+        left: max(28px, calc((100vw - 1120px) / 2));
+      }
+      .speech {
+        top: 43px;
+        right: max(92px, calc((100vw - 1120px) / 2 + 76px));
+      }
+      .hero-title {
+        width: 100%;
+        max-width: 1280px;
+        font-size: clamp(100px, 21vw, 285px);
+        line-height: 0.72;
+        letter-spacing: -0.095em;
+      }
+      .hero-title .brand-word {
+        position: relative;
+        transform: scaleX(1.02);
+      }
+      .hero-title .cloud {
+        margin-top: 8px;
+        font-size: 0.61em;
+      }
+      .brand-tag {
+        position: absolute;
+        left: 18%;
+        bottom: -0.08em;
+        z-index: 4;
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: var(--purple);
+        color: #fff;
+        font-size: clamp(10px, 1.3vw, 15px);
+        line-height: 1;
+        letter-spacing: -0.02em;
+        transform: rotate(-7deg);
+        box-shadow: 0 7px 16px #6822e83b;
+      }
+      .hero-sub {
+        width: min(800px, 88%);
+        margin: 38px auto 0;
+        grid-template-columns: minmax(230px, 0.86fr) minmax(340px, 1.14fr);
+        gap: clamp(25px, 6vw, 72px);
+        text-align: left;
+      }
+      .hero-sub > div:first-child {
+        justify-self: start;
+      }
+      .hero-copy {
+        max-width: 510px;
+        font-size: 16px;
+      }
+      .hero-stamp {
+        left: max(42px, calc((100vw - 1120px) / 2));
+        bottom: 54px;
+        z-index: 6;
+        width: 100px;
+        height: 100px;
+        border-style: solid;
+        border-color: #aaa;
+        text-decoration: none;
+        transition: transform 0.28s ease;
+      }
+      .hero-stamp:hover {
+        transform: rotate(-8deg) scale(1.06);
+      }
+      .hero-stamp:before {
+        content: "";
+        inset: 19px;
+        background: var(--purple);
+      }
+      .hero-stamp span {
+        top: 5px;
+        left: 0;
+        width: 100%;
+        padding: 0;
+        background: var(--bg);
+        font-size: 7px;
+        letter-spacing: 0.14em;
+        text-align: center;
+      }
+      .hero-stamp b {
+        position: absolute;
+        z-index: 2;
+        display: grid;
+        place-items: center;
+        inset: 19px;
+        color: #fff;
+        font-size: 28px;
+        font-weight: 500;
+      }
+      .scroll-link {
+        display: none;
+      }
+      .orb-a {
+        top: 6%;
+        left: 15%;
+        width: 118px;
+        height: 118px;
+      }
+      .orb-b {
+        top: 13%;
+        left: 59%;
+        width: 82px;
+        height: 82px;
+      }
+      .orb-c {
+        top: 8%;
+        left: 39%;
+        width: 47px;
+        height: 47px;
+      }
+      .orb-d {
+        top: 33%;
+        right: 17%;
+        width: 24px;
+        height: 24px;
+      }
+      .orb-a {
+        animation-duration: 6.2s;
+      }
+      .orb-b {
+        animation-duration: 5.4s;
+        animation-delay: -1.4s;
+      }
+      .orb-c {
+        animation-duration: 4.8s;
+        animation-delay: -2.1s;
+      }
+      .orb-d {
+        animation-duration: 5.8s;
+        animation-delay: -0.8s;
+      }
+      .hero-title {
+        animation: heroTitleIn 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+      .hero-sub {
+        animation: heroTextIn 0.8s 0.14s both;
+      }
+      .speech {
+        animation: speechIn 0.65s 0.2s both;
+      }
+      @keyframes heroTitleIn {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes heroTextIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes speechIn {
+        from {
+          opacity: 0;
+          transform: translateY(-8px) rotate(2deg);
+        }
+        to {
+          opacity: 1;
+          transform: rotate(2deg);
+        }
+      }
+      @media (max-width: 850px) {
+        .hero {
+          height: auto;
+          min-height: 760px;
+        }
+        .hero-inner {
+          padding: 178px 22px 130px;
+        }
+        .hero-title {
+          font-size: clamp(88px, 20vw, 180px);
+        }
+        .hero-kicker {
+          top: 34px;
+          left: 22px;
+        }
+        .speech {
+          top: 82px;
+          right: 24px;
+        }
+        .hero-sub {
+          width: min(680px, 90%);
+          margin-top: 42px;
+          grid-template-columns: 1fr 1.15fr;
+          gap: 24px;
+        }
+        .orb-a {
+          top: 95px;
+          left: 10%;
+          width: 82px;
+          height: 82px;
+        }
+        .orb-b {
+          top: 185px;
+          left: auto;
+          right: 12%;
+          width: 60px;
+          height: 60px;
+        }
+        .orb-c {
+          top: 105px;
+          left: 68%;
+          width: 34px;
+          height: 34px;
+        }
+        .orb-d {
+          display: none;
+        }
+        .hero-stamp {
+          left: 28px;
+          bottom: 48px;
+          width: 86px;
+          height: 86px;
+        }
+        .hero-stamp:before,
+        .hero-stamp b {
+          inset: 16px;
+        }
+      }
+      @media (max-width: 560px) {
+        .hero {
+          min-height: 720px;
+        }
+        .hero-inner {
+          padding: 170px 16px 126px;
+        }
+        .hero-title {
+          font-size: clamp(70px, 19vw, 104px);
+          line-height: 0.78;
+        }
+        .hero-title .cloud {
+          margin-top: 9px;
+        }
+        .brand-tag {
+          left: 15%;
+          bottom: -0.12em;
+          padding: 6px 9px;
+          font-size: 9px;
+        }
+        .hero-kicker {
+          left: 17px;
+          top: 25px;
+          font-size: 8px;
+        }
+        .speech {
+          top: 70px;
+          right: 16px;
+          font-size: 9px;
+          padding: 8px 11px;
+        }
+        .hero-sub {
+          width: min(360px, 94%);
+          margin-top: 34px;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          text-align: center;
+        }
+        .hero-sub > div:first-child {
+          justify-self: center;
+        }
+        .hero-copy {
+          font-size: 13px;
+        }
+        .role-pills {
+          justify-content: center;
+          gap: 7px;
+        }
+        .pill {
+          font-size: 10px;
+          padding: 8px 10px;
+        }
+        .hero-stamp {
+          left: 18px;
+          bottom: 38px;
+          width: 74px;
+          height: 74px;
+        }
+        .hero-stamp:before,
+        .hero-stamp b {
+          inset: 13px;
+        }
+        .hero-stamp b {
+          font-size: 23px;
+        }
+        .hero-stamp span {
+          font-size: 6px;
+          letter-spacing: 0.1em;
+        }
+        .orb-a {
+          top: 122px;
+          left: 7%;
+          width: 54px;
+          height: 54px;
+        }
+        .orb-b {
+          top: 210px;
+          right: 9%;
+          width: 43px;
+          height: 43px;
+        }
+        .orb-c {
+          top: 110px;
+          left: 69%;
+          width: 25px;
+          height: 25px;
+        }
+        .hero:after {
+          width: 310px;
+          height: 150px;
+          right: -100px;
+          bottom: -90px;
+        }
+      }
+    </style>
+
+    <style>
+      .about-monogram.about-star {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        color: #171717;
+        text-shadow: none;
+        letter-spacing: 0;
+        font-size: clamp(150px, 18vw, 220px);
+      }
+    </style>
+
+    <style>
+      .storage-offer {
+        padding: 24px 0 76px;
+      }
+      .storage-offer-inner {
+        display: grid;
+        grid-template-columns: minmax(170px, 0.48fr) 1fr;
+        align-items: center;
+        gap: clamp(28px, 6vw, 72px);
+        padding: clamp(26px, 5vw, 54px);
+        border-radius: 24px;
+        background: #171717;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .storage-offer-inner::after {
+        content: "✦";
+        position: absolute;
+        right: -22px;
+        bottom: -105px;
+        font-size: clamp(180px, 27vw, 360px);
+        line-height: 1;
+        color: #fff;
+        opacity: 0.055;
+        pointer-events: none;
+      }
+      .storage-number,
+      .storage-copy {
+        position: relative;
+        z-index: 1;
+      }
+      .storage-number strong {
+        display: block;
+        font-size: clamp(105px, 15vw, 190px);
+        line-height: 0.72;
+        letter-spacing: -0.12em;
+        color: #fff;
+        text-shadow: 0 8px 0 #777;
+      }
+      .storage-number span {
+        display: block;
+        margin-top: 20px;
+        font-family: var(--mono);
+        font-size: 12px;
+        letter-spacing: 0.18em;
+      }
+      .storage-copy .section-tag {
+        color: #c5c5c5;
+      }
+      .storage-copy h2 {
+        max-width: 640px;
+        margin: 10px 0 12px;
+        font-size: clamp(32px, 4.5vw, 54px);
+        line-height: 1;
+        letter-spacing: -0.065em;
+      }
+      .storage-copy p {
+        max-width: 630px;
+        margin: 0;
+        color: #d0d0d0;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+      .storage-copy p strong {
+        color: #fff;
+      }
+      .storage-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-top: 22px;
+        padding: 12px 17px;
+        border-radius: 999px;
+        background: #fff;
+        color: #171717;
+        font-size: 13px;
+        font-weight: 800;
+        transition: transform 0.2s ease;
+      }
+      .storage-cta:hover {
+        transform: translateY(-3px);
+      }
+      @media (max-width: 700px) {
+        .storage-offer {
+          padding: 8px 0 58px;
+        }
+        .storage-offer-inner {
+          grid-template-columns: 1fr;
+          gap: 25px;
+          padding: 30px 24px;
+        }
+        .storage-number strong {
+          font-size: 120px;
+        }
+        .storage-number span {
+          margin-top: 13px;
+        }
+        .storage-copy h2 {
+          font-size: 38px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button class="menu-button" id="menuButton" aria-label="Abrir navegación" aria-expanded="false">
+      <span></span>
+    </button>
+    <nav class="menu-panel" id="menuPanel" aria-label="Navegación">
+      <a href="#inicio">Inicio <span>↗</span></a
+      ><a href="#proyectos">La biblioteca <span>↗</span></a
+      ><a href="#servicios">Qué puedes hacer <span>↗</span></a
+      ><a href="#nosotros">Acerca de Stelar <span>↗</span></a
+      ><a href="https://f.stelarcloud.nx.kg/#/docs">Documentación API <span>↗</span></a
+      ><a href="https://f.stelarcloud.nx.kg/#/dashboard">Abrir mi espacio <span>↗</span></a>
+    </nav>
+    <button class="secret-button" id="secretButton">✺ Secretos <b id="secretCount">0/5</b></button>
+    <div class="secret-pop" id="secretPop" role="status" aria-live="polite"></div>
+    <canvas class="celebration-canvas" id="celebrationCanvas" aria-hidden="true"></canvas>
+    <div class="shooting-stars" id="shootingStars" aria-hidden="true"></div>
+    <main>
+      <section class="hero" id="inicio">
+        <span class="hero-kicker"><i></i> Una biblioteca, a tu manera</span
+        ><span class="speech">hola, creador ✦</span><i class="orbit orb-a"></i
+        ><i class="orbit orb-b"></i><i class="orbit orb-c"></i><i class="orbit orb-d"></i>
+        <div class="hero-inner">
+          <h1 class="hero-title">
+            <span class="brand-word">Stelar<span class="brand-tag">Tu espacio</span></span
+            ><span class="cloud">Cloud</span>
+          </h1>
+          <div class="hero-sub">
+            <div>
+              <span class="availability"><i></i> 50 GB GRATIS para empezar</span>
+            </div>
+            <div class="hero-copy">
+              Empieza con <strong>50 GB de almacenamiento gratis.</strong> Guarda imágenes y videos,
+              ordénalos en carpetas y conéctalos a tus proyectos usando la API.
+              <div class="role-pills">
+                <span class="pill"><i></i> Biblioteca privada</span
+                ><span class="pill"><i></i> API para tus proyectos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#proyectos" class="hero-stamp" aria-label="Desplazarse a la biblioteca"
+          ><span>SCROLL · PROYECTOS</span><b aria-hidden="true">↓</b></a
+        >
+      </section>
+      <section class="section" id="proyectos">
+        <div class="wrap">
+          <div class="section-header reveal">
+            <div>
+              <span class="section-tag">01 — El espacio</span>
+              <h2 class="section-title">
+                Tu biblioteca.<br /><span class="accent">A tu ritmo.</span>
+              </h2>
+              <p class="section-intro">
+                Un home para tus recursos multimedia. Organízalos por proyectos, encuentra lo que
+                buscas y sigue creando.
+              </p>
+            </div>
+            <p class="tiny-note">Desliza, explora y abre tu espacio para empezar →</p>
+          </div>
+          <div class="project-grid">
+            <a
+              class="project-card reveal"
+              href="https://f.stelarcloud.nx.kg/#/folders"
+              target="_blank"
+              rel="noopener"
+              ><div class="card-art screen-art">
+                <img
+                  class="product-shot"
+                  src="carpetas.png"
+                  alt="Captura real de la sección Carpetas de Stelar Cloud"
+                  onerror="this.style.display = 'none'"
+                />
+              </div>
+              <div class="card-info">
+                <div>
+                  <small>01 / ORGANIZA</small>
+                  <h3>Carpetas para cada idea</h3>
+                </div>
+                <span class="arrow">↗</span>
+              </div></a
+            >
+            <a
+              class="project-card reveal"
+              href="https://f.stelarcloud.nx.kg/#/dashboard"
+              target="_blank"
+              rel="noopener"
+              ><div class="card-art screen-art">
+                <img
+                  class="product-shot"
+                  src="dashboard.png"
+                  alt="Captura real del dashboard de Stelar Cloud"
+                  onerror="this.style.display = 'none'"
+                />
+              </div>
+              <div class="card-info">
+                <div>
+                  <small>02 / TU ESPACIO</small>
+                  <h3>El dashboard de Stelar Cloud</h3>
+                </div>
+                <span class="arrow">↗</span>
+              </div></a
+            >
+            <a
+              class="project-card wide reveal"
+              href="https://f.stelarcloud.nx.kg/#/api"
+              target="_blank"
+              rel="noopener"
+              ><div class="card-art screen-art">
+                <div class="api-promo">
+                  API<small>Conecta tus<br />propios proyectos</small>
+                </div>
+                <img
+                  class="api-panel-shot"
+                  src="api.png"
+                  alt="Captura real de la sección API de Stelar Cloud"
+                  onerror="this.style.display = 'none'"
+                />
+              </div>
+              <div class="card-info">
+                <div>
+                  <small>03 / CONECTA</small>
+                  <h3>API para tu flujo de trabajo</h3>
+                </div>
+                <span class="arrow">↗</span>
+              </div></a
+            >
+          </div>
+        </div>
+      </section>
+      <section class="storage-offer" aria-labelledby="storage-title">
+        <div class="wrap storage-offer-inner reveal">
+          <div
+            class="storage-number secret-trigger"
+            id="storageSecret"
+            role="button"
+            tabindex="0"
+            aria-label="Toca para descubrir un secreto sobre los 50 gigabytes"
+          >
+            <strong>50</strong>
+            <span>GB GRATIS</span>
+          </div>
+          <div class="storage-copy">
+            <span class="section-tag">Más espacio para tus ideas</span>
+            <h2 id="storage-title">Todo tu contenido. Un solo lugar.</h2>
+            <p>
+              Empieza con <strong>50 GB de almacenamiento gratis</strong> para subir imágenes y
+              videos, crear carpetas por proyecto y encontrar tus recursos cuando los necesites.
+              ¿Desarrollas una app? Conéctala a tu biblioteca usando la API de Stelar Cloud.
+            </p>
+            <a class="storage-cta" href="https://f.stelarcloud.nx.kg/#/dashboard">
+              Prueba Stelar Cloud <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+      <section class="section" id="servicios" style="padding-top: 0">
+        <div class="wrap">
+          <div class="section-header reveal">
+            <div>
+              <span class="section-tag">02 — Sin enredos</span>
+              <h2 class="section-title">
+                De tu idea<br /><span class="accent">a producción.</span>
+              </h2>
+            </div>
+            <p class="tiny-note">Una sola pieza para guardar, organizar y conectar tus archivos.</p>
+          </div>
+          <div class="feature-row reveal">
+            <article class="feature-item">
+              <span>01 / SUBE</span>
+              <h3>Imágenes y videos</h3>
+              <p>Guarda tus recursos multimedia en tu biblioteca personal.</p>
+            </article>
+            <article class="feature-item">
+              <span>02 / ORDENA</span>
+              <h3>Carpetas claras</h3>
+              <p>Separa contenido por proyecto y encuentra cada archivo rápido.</p>
+            </article>
+            <article class="feature-item">
+              <span>03 / INTEGRA</span>
+              <h3>API v1</h3>
+              <p>Crea API keys y conecta tus propias aplicaciones.</p>
+            </article>
+            <article class="feature-item">
+              <span>04 / ADMINISTRA</span>
+              <h3>Todo en un panel</h3>
+              <p>Consulta tu almacenamiento y gestiona el contenido en un sitio.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="section about" id="nosotros">
+        <div class="wrap about-grid">
+          <div class="about-visual reveal">
+            <div class="about-orbit"></div>
+            <div
+              class="about-monogram about-star secret-trigger"
+              id="logoSecret"
+              role="button"
+              tabindex="0"
+              aria-label="Estrella del logo: toca tres veces para descubrir un secreto"
+            >
+              ★
+            </div>
+          </div>
+          <div class="about-copy reveal">
+            <span class="section-tag">03 — Acerca de Stelar</span>
+            <h2 class="section-title">
+              Pequeño en pasos.<br /><span class="accent">Grande en orden.</span>
+            </h2>
+            <p>
+              Stelar Cloud es una biblioteca multimedia segura para tus proyectos. Guarda imágenes y
+              videos, organízalos en carpetas y deja que tu aplicación hable con tu espacio usando
+              una API key.
+            </p>
+            <p>Sin perder tiempo buscando archivos. Sin complicarte para empezar.</p>
+            <div class="tech-list">
+              <span class="tech">Biblioteca personal</span><span class="tech">Imágenes</span
+              ><span class="tech">Videos</span><span class="tech">Carpetas</span
+              ><span class="tech">API REST</span><span class="tech">API keys</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="contact" id="contacto">
+        <span class="contact-orb one"></span><span class="contact-orb two"></span>
+        <div class="wrap reveal">
+          <span class="section-tag">04 — ¿Lo probamos?</span>
+          <h2 class="section-title">¿Tu siguiente<br /><span class="accent">proyecto?</span></h2>
+          <p>Abre tu biblioteca y empieza a poner tus imágenes y videos en su sitio.</p>
+          <a class="contact-link" href="https://f.stelarcloud.nx.kg/#/dashboard"
+            >Entrar a Stelar Cloud <span>↗</span></a
+          >
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="wrap footer-inner">
+        <div class="footer-brand-group">
+          <button
+            class="footer-star secret-trigger"
+            id="footerSecret"
+            type="button"
+            aria-label="Descubrir un secreto en la estrella del pie de página"
+          >
+            ✦
+          </button>
+          <a class="footer-brand" href="#inicio">Stelar <b>Cloud</b></a>
+        </div>
+        <span>Tu biblioteca multimedia segura.</span>
+        <nav class="footer-links">
+          <a href="https://f.stelarcloud.nx.kg/#/dashboard">Dashboard</a
+          ><a href="https://f.stelarcloud.nx.kg/#/folders">Carpetas</a
+          ><a href="https://f.stelarcloud.nx.kg/#/api">API</a
+          ><a href="https://f.stelarcloud.nx.kg/#/docs">Docs</a>
+        </nav>
+        <span>© <span id="year"></span> Stelar Cloud</span>
+      </div>
+    </footer>
+    <script>
+      const menuButton = document.getElementById("menuButton"),
+        menuPanel = document.getElementById("menuPanel");
+      menuButton.addEventListener("click", () => {
+        const open = menuPanel.classList.toggle("open");
+        menuButton.classList.toggle("active", open);
+        menuButton.setAttribute("aria-expanded", String(open));
+      });
+      menuPanel.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => {
+          menuPanel.classList.remove("open");
+          menuButton.classList.remove("active");
+          menuButton.setAttribute("aria-expanded", "false");
+        }),
+      );
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          menuPanel.classList.remove("open");
+          menuButton.classList.remove("active");
+        }
+      });
+      document.getElementById("year").textContent = new Date().getFullYear();
+      const obs = new IntersectionObserver(
+        (entries) =>
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              obs.unobserve(e.target);
+            }
+          }),
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+      const secretPop = document.getElementById("secretPop");
+      const secretButton = document.getElementById("secretButton");
+      const secretCount = document.getElementById("secretCount");
+      const foundSecrets = new Set();
+      const celebrationCanvas = document.getElementById("celebrationCanvas");
+      const celebrationContext = celebrationCanvas.getContext("2d");
+      const shootingStars = document.getElementById("shootingStars");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      let toastTimer;
+      let confettiFrame = 0;
+      let shootingCooldownUntil = 0;
+
+      function launchConfetti() {
+        if (reducedMotion.matches || confettiFrame) return;
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        celebrationCanvas.width = Math.round(width * pixelRatio);
+        celebrationCanvas.height = Math.round(height * pixelRatio);
+        celebrationCanvas.style.width = `${width}px`;
+        celebrationCanvas.style.height = `${height}px`;
+        celebrationContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        const colors = ["#111111", "#444444", "#777777", "#aaaaaa", "#dddddd", "#ffffff"];
+        const count = width < 600 ? 95 : 165;
+        const particles = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: -Math.random() * height,
+          width: 4 + Math.random() * 7,
+          height: 6 + Math.random() * 8,
+          speedX: -1.7 + Math.random() * 3.4,
+          speedY: 2.2 + Math.random() * 4.4,
+          rotation: Math.random() * Math.PI,
+          spin: -0.09 + Math.random() * 0.18,
+          color: colors[Math.floor(Math.random() * colors.length)],
+        }));
+        const startedAt = performance.now();
+        function drawFrame(now) {
+          celebrationContext.clearRect(0, 0, width, height);
+          particles.forEach((particle) => {
+            particle.x += particle.speedX;
+            particle.y += particle.speedY;
+            particle.rotation += particle.spin;
+            if (particle.y > height + 20) {
+              particle.y = -20;
+              particle.x = Math.random() * width;
+            }
+            if (particle.x < -20) particle.x = width + 10;
+            if (particle.x > width + 20) particle.x = -10;
+            celebrationContext.save();
+            celebrationContext.translate(particle.x, particle.y);
+            celebrationContext.rotate(particle.rotation);
+            celebrationContext.fillStyle = particle.color;
+            celebrationContext.fillRect(
+              -particle.width / 2,
+              -particle.height / 2,
+              particle.width,
+              particle.height,
+            );
+            celebrationContext.restore();
+          });
+          if (now - startedAt < 4200) {
+            confettiFrame = requestAnimationFrame(drawFrame);
+          } else {
+            celebrationContext.clearRect(0, 0, width, height);
+            confettiFrame = 0;
+          }
+        }
+        confettiFrame = requestAnimationFrame(drawFrame);
+      }
+
+      function launchShootingStars() {
+        if (reducedMotion.matches || Date.now() < shootingCooldownUntil) return;
+        shootingCooldownUntil = Date.now() + 2600;
+        shootingStars.replaceChildren();
+        for (let index = 0; index < 9; index += 1) {
+          const star = document.createElement("span");
+          star.className = "shooting-star";
+          star.style.left = `${88 + Math.random() * 32}%`;
+          star.style.top = `${Math.random() * 48}%`;
+          star.style.animationDuration = `${1.2 + Math.random() * 0.55}s`;
+          star.style.animationDelay = `${index * 0.11}s`;
+          star.addEventListener("animationend", () => star.remove(), { once: true });
+          shootingStars.appendChild(star);
+        }
+      }
+
+      function showSecretMessage(message) {
+        secretPop.textContent = message;
+        secretPop.classList.remove("show");
+        void secretPop.offsetWidth;
+        secretPop.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => secretPop.classList.remove("show"), 3000);
+      }
+
+      function unlockSecret(key, message) {
+        if (foundSecrets.has(key)) {
+          showSecretMessage("Ese secreto ya está en tu colección. ¡Sigue explorando!");
+          return;
+        }
+        foundSecrets.add(key);
+        secretCount.textContent = `${foundSecrets.size}/5`;
+        showSecretMessage(message);
+        if (key === "final") launchConfetti();
+      }
+
+      const logoSecret = document.getElementById("logoSecret");
+      let logoTaps = 0;
+      let logoTapTimer;
+      logoSecret.addEventListener("click", () => {
+        if (foundSecrets.has("logo")) {
+          showSecretMessage("La estrella ya te reveló su secreto. ✦");
+          return;
+        }
+        logoTaps += 1;
+        clearTimeout(logoTapTimer);
+        if (logoTaps < 3) {
+          showSecretMessage(
+            `La estrella está escondiendo algo… ${3 - logoTaps} toque${logoTaps === 1 ? "s" : ""} más.`,
+          );
+          logoTapTimer = setTimeout(() => (logoTaps = 0), 1800);
+          return;
+        }
+        logoTaps = 0;
+        unlockSecret("logo", "¡Encontraste el guiño de Stelar! Tres toques y una estrella. ✦");
+      });
+      logoSecret.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          logoSecret.click();
+        }
+      });
+
+      const storageSecret = document.getElementById("storageSecret");
+      const revealStorageSecret = () =>
+        unlockSecret("storage", "Tus 50 GB gratis están listos para imágenes, videos y proyectos.");
+      storageSecret.addEventListener("click", revealStorageSecret);
+      storageSecret.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          revealStorageSecret();
+        }
+      });
+
+      let typedCode = "";
+      document.addEventListener("keydown", (event) => {
+        if (event.key.length !== 1 || event.ctrlKey || event.altKey || event.metaKey) return;
+        if (event.target.matches("input, textarea, [contenteditable='true']")) return;
+        typedCode = (typedCode + event.key.toUpperCase()).slice(-6);
+        if (typedCode === "STELAR") {
+          typedCode = "";
+          launchShootingStars();
+          unlockSecret("keyboard", "Acceso concedido. Tus archivos ya tienen su propio espacio. ✦");
+        }
+      });
+
+      const footerSecret = document.getElementById("footerSecret");
+      const revealFooterSecret = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        unlockSecret(
+          "footer",
+          "Secretito de pie de página: cada gran nube empieza con una estrella.",
+        );
+      };
+      footerSecret.addEventListener("click", revealFooterSecret);
+
+      secretButton.addEventListener("click", () => {
+        if (foundSecrets.size < 4) {
+          showSecretMessage(
+            "Hay un último secreto aquí. Primero encuentra las otras cuatro pistas por la página.",
+          );
+          return;
+        }
+        unlockSecret(
+          "final",
+          "¡Completaste los 5 secretos de Stelar Cloud! Nivel explorador desbloqueado. ✨",
+        );
+      });
+    </script>
+  </body>
+</html>
